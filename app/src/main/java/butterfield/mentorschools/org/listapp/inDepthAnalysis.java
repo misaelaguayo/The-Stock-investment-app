@@ -66,38 +66,15 @@ public class inDepthAnalysis extends AppCompatActivity {
         followUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save(v);                //currently only saves company to file. Does not remove if already following
+                //save(v);                //currently only saves company to file. Does not remove if already following
+                String saveName = companyName.getText().toString();
+                String saveTicker = companyTicker.getText().toString();
+                String concat = saveName + ":" + saveTicker + "\n";
+
+                new LocalStorage().save(concat,getApplicationContext());
             }
         });
 
     }
-
-    public void save(View v) {
-        String saveName = companyName.getText().toString();
-        String saveTicker = companyTicker.getText().toString();
-        String concat = saveName + ":" + saveTicker + "\n";
-        FileOutputStream fos = null;
-
-        try {
-            fos = openFileOutput(FILE_NAME, MODE_APPEND);
-            fos.write(concat.getBytes());
-
-            Toast.makeText(this,"Saved to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null)
-            {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 
 }
