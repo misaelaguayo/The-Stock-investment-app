@@ -3,27 +3,11 @@
     <string name="companyName">Company Name</string>
     <string name="companyOpen">Open</string>
 
-    <string-array name="items">
-        <item>Apple</item>
-        <item>Google</item>
-        <item>Microsoft</item>
-        <item>Exxon Mobil</item>
-        <item>AT&amp;T</item>
-    </string-array>
-
-    <string-array name="prices">
-        <item>-1.08%</item>
-        <item>-1.63%</item>
-        <item>+.61%</item>
-        <item>+.41%</item>
-        <item>+1.02%</item>
-    </string-array>
-
-    <string-array name="descriptions">
-        <item>AAPL</item>
-        <item>GOOGL</item>
-        <item>MSFT</item>
-        <item>XOM</item>
-        <item>T</item>
+    <string-array name="tickers">
+        <item>aapl:Apple</item>
+        <item>googl:Google</item>
+        <item>msft:Microsoft</item>
+        <item>xom:Exon Mobile</item>
+        <item>hd:Home Depot</item>
     </string-array>
 </resources>

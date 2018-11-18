@@ -1,6 +1,8 @@
 package butterfield.mentorschools.org.listapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,13 +13,16 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class inDepthAnalysis extends AppCompatActivity {
-    private static final String FILE_NAME = "followedCompanies.txt";    //SAVE FOLLOWED COMPANIES HERE
+    private static final String FILE_NAME = "LocalStorage.txt";    //SAVE FOLLOWED COMPANIES HERE
 
     public static TextView companyName;
     public static TextView companyTicker;
     public static TextView Open;
+    String[] tickers;
+
     Button followUnfollow;
 
     @Override
@@ -32,13 +37,31 @@ public class inDepthAnalysis extends AppCompatActivity {
         companyTicker = (TextView) findViewById(R.id.companyTicker);
         Open = (TextView) findViewById(R.id.open);
         followUnfollow = (Button) findViewById(R.id.followUnfollow);
+        Resources res = getResources();
+        tickers = res.getStringArray(R.array.tickers);
 
+        //populate fields besides ticker and company name
         new fetchData().execute("http://13.59.22.125/" + tickerInput);
 
-        //FOR FRONT END TESTING ONLY
-        companyTicker.setText("aapl");
-        companyName.setText("Apple, Inc.");
+        for (String ticker: tickers)
+        {
+            String[] pair = ticker.split(":");
 
+            String key = pair[0];
+            String value = pair[1];
+
+            if (tickerInput.equals(key)) //if you find a recognized ticker populate ticker and company
+            {
+                companyTicker.setText(key.toUpperCase());
+                companyName.setText(value);
+                break;
+            }
+            else
+            {
+                companyTicker.setText("null");
+                companyName.setText("nulL");
+            }
+        }
 
         followUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +75,11 @@ public class inDepthAnalysis extends AppCompatActivity {
     public void save(View v) {
         String saveName = companyName.getText().toString();
         String saveTicker = companyTicker.getText().toString();
-        String concat = saveName + ":" + saveTicker;
+        String concat = saveName + ":" + saveTicker + "\n";
         FileOutputStream fos = null;
 
         try {
-            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos = openFileOutput(FILE_NAME, MODE_APPEND);
             fos.write(concat.getBytes());
 
             Toast.makeText(this,"Saved to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
