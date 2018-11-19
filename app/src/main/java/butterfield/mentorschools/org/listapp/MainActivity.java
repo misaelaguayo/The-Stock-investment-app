@@ -29,30 +29,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        myListView = (ListView)findViewById(R.id.myListView);
         searchBar = (EditText) findViewById(R.id.searchBar);
         go = (Button) findViewById(R.id.button);
-
-        try {
-            loadCompanies = new LocalStorage().load(getApplicationContext());
-            arrayList = new ArrayList<String>();
-            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
-            myListView.setAdapter(adapter);
-
-            for (int i = 0; i < loadCompanies.length; i++) {
-                arrayList.add(loadCompanies[i]);
-            }
-            adapter.notifyDataSetChanged();
-        }
-        catch(NullPointerException e){
-
-        }
+        new PopulateFollowedList(this).populate();
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sendSearch = new Intent(MainActivity.this, inDepthAnalysis.class);
-
                 searchText = searchBar.getText().toString();
                 sendSearch.putExtra("userInput",searchText);
                 startActivity(sendSearch);
@@ -60,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
+    @Override
+    protected void onResume() {                 //update Followed list when back button is pressed
+        super.onResume();
+        new PopulateFollowedList(this).populate();
+    }
 }
