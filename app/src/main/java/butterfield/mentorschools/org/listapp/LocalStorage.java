@@ -17,6 +17,20 @@ import java.util.List;
 
 public class LocalStorage {
 
+    public Boolean check(String[] data,String companyTicker)
+    {
+        for(int i = 0; i < data.length; i++)
+        {
+            String[] temp = data[i].split(":");
+            if (companyTicker.equals(temp[1]))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void save(String data, Context context)
     {
         try

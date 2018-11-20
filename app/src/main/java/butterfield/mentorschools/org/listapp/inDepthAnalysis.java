@@ -66,12 +66,21 @@ public class inDepthAnalysis extends AppCompatActivity {
         followUnfollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //save(v);                //currently only saves company to file. Does not remove if already following
-                String saveName = companyName.getText().toString();
-                String saveTicker = companyTicker.getText().toString();
-                String concat = saveName + ":" + saveTicker + "\n";
+                //currently only saves company to file. Does not remove if already following
+                String cName = companyName.getText().toString();
+                String cTicker = companyTicker.getText().toString();
+                String concat = cName + ":" + cTicker + "\n";
 
-                new LocalStorage().save(concat,getApplicationContext());
+                //loads currently followed companies
+                String[] loadCompanies = new LocalStorage().load(getApplicationContext());
+
+                Boolean check= new LocalStorage().check(loadCompanies,cTicker);
+                if(!check)
+                {
+                    new LocalStorage().save(concat,getApplicationContext());
+                }
+
+                //new LocalStorage().save(concat,getApplicationContext());
             }
         });
 
